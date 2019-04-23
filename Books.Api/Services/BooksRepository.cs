@@ -33,6 +33,21 @@ namespace Books.Api.Services
                 .ToListAsync();
         }
 
+        public void AddBook(Book bookToAdd)
+        {
+            if (bookToAdd == null)
+            {
+                throw new ArgumentNullException(nameof(bookToAdd));
+            }
+
+            this.context.Add(bookToAdd);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await this.context.SaveChangesAsync() > 0);
+        }
+
         public IEnumerable<Book> GetBooks()
         {
             this.context.Database.ExecuteSqlCommand("WAITFOR DELAY '00:00:02';");

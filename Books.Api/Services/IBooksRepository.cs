@@ -9,8 +9,10 @@ namespace Books.Api.Services
     {
         IEnumerable<Book> GetBooks();
         Book GetBook(Guid id);
+        void AddBook(Entities.Book bookToAdd);
 
         Task<IEnumerable<Book>> GetBooksAsync();
         Task<Book> GetBookAsync(Guid id);
+        Task<bool> SaveChangesAsync();
     }
 }

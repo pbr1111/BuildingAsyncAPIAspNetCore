@@ -1,5 +1,6 @@
-﻿using Books.Api.Entities;
+﻿using AutoMapper;
 using Books.Api.Filters;
+using Books.Api.Models;
 using Books.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,32 +14,49 @@ namespace Books.Api.Controllers
     public class BooksController : ControllerBase
     {
         private IBooksRepository booksRepository = null;
+        private readonly IMapper mapper = null;
 
-        public BooksController(IBooksRepository booksRepository)
+        public BooksController(IBooksRepository booksRepository, IMapper mapper)
         {
-            this.booksRepository = booksRepository 
+            this.booksRepository = booksRepository
                 ?? throw new ArgumentNullException(nameof(booksRepository));
+            this.mapper = mapper
+                ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
         [BooksResultFilter]
         public async Task<IActionResult> GetBooks()
         {
-            IEnumerable<Book> result = await this.booksRepository.GetBooksAsync();
+            IEnumerable<Entities.Book> result = await this.booksRepository.GetBooksAsync();
             return Ok(result);
         }
 
         [HttpGet]
         [BookResultFilter]
-        [Route("{id}")]
+        [Route("{id}", Name = "GetBook")]
         public async Task<IActionResult> GetBook(Guid id)
         {
-            Book result = await this.booksRepository.GetBookAsync(id);
-            if(result == null)
+            Entities.Book result = await this.booksRepository.GetBookAsync(id);
+            if (result == null)
             {
                 return NotFound();
             }
             return Ok(result);
+        }
+
+        [HttpPost]
+        [BookResultFilter]
+        public async Task<IActionResult> CreateBook([FromBody] BookForCreation book)
+        {
+            Entities.Book bookEntity = this.mapper.Map<Entities.Book>(book);
+            this.booksRepository.AddBook(bookEntity);
+
+            await this.booksRepository.SaveChangesAsync();
+
+            await this.booksRepository.GetBookAsync(bookEntity.Id);
+
+            return CreatedAtRoute("GetBook", new { id = bookEntity.Id }, bookEntity);
         }
     }
 }

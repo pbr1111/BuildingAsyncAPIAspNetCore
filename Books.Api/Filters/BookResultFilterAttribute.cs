@@ -20,7 +20,7 @@ namespace Books.Api.Filters
             }
 
             IMapper mapper = context.HttpContext.RequestServices.GetService<IMapper>();
-            resultFromAction.Value = Mapper.Map<Models.Book>(resultFromAction.Value);
+            resultFromAction.Value = mapper.Map<Models.Book>(resultFromAction.Value);
 
             await next();
         }
