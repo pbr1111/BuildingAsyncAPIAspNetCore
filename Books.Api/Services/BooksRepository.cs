@@ -1,6 +1,7 @@
 ﻿using Books.Api.Contexts;
 using Books.Api.Entities;
 using Books.Api.ExternalModels;
+using Books.Legacy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -45,32 +46,33 @@ namespace Books.Api.Services
 
         public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds)
         {
+            int bookPages = await this.GetBookPages();
+
             return await this.context.Books.Where(b => bookIds.Contains(b.Id))
                 .Include(b => b.Author).ToListAsync();
         }
 
         public async Task<BookCover> GetBookCoverAsync(string coverId)
         {
-            using (HttpClient httpClient = this.httpClientFactory.CreateClient())
+            HttpClient httpClient = this.httpClientFactory.CreateClient();
+
+            HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:52644/api/bookcovers/{coverId}");
+            if (response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await httpClient.GetAsync($"http://localhost:52644/api/bookcovers/{coverId}");
-                if (response.IsSuccessStatusCode)
-                {
-                    return JsonConvert.DeserializeObject<BookCover>(await response.Content.ReadAsStringAsync());
-                }
-                return null;
+                return JsonConvert.DeserializeObject<BookCover>(await response.Content.ReadAsStringAsync());
             }
+            return null;
         }
 
         public async Task<IEnumerable<BookCover>> GetBookCoversAsync(Guid bookId)
         {
-            using (HttpClient httpClient = this.httpClientFactory.CreateClient())
-            {
-                List<BookCover> bookCovers = new List<BookCover>();
-                this.cancellationTokenSource = new CancellationTokenSource();
+            HttpClient httpClient = this.httpClientFactory.CreateClient();
 
-                string[] bookCoverUrls = new[]
-                {
+            List<BookCover> bookCovers = new List<BookCover>();
+            this.cancellationTokenSource = new CancellationTokenSource();
+
+            string[] bookCoverUrls = new[]
+            {
                     $"http://localhost:52644/api/bookcovers/{bookId}-dummycover1",
                     $"http://localhost:52644/api/bookcovers/{bookId}-dummycover2?returnFault=true",
                     $"http://localhost:52644/api/bookcovers/{bookId}-dummycover3",
@@ -78,22 +80,21 @@ namespace Books.Api.Services
                     $"http://localhost:52644/api/bookcovers/{bookId}-dummycover5"
                 };
 
-                List<Task<BookCover>> downloadBookCoverTasks = bookCoverUrls
-                    .Select(url => this.DownloadBookCoverAsync(httpClient, url, cancellationTokenSource.Token)).ToList();
+            List<Task<BookCover>> downloadBookCoverTasks = bookCoverUrls
+                .Select(url => this.DownloadBookCoverAsync(httpClient, url, cancellationTokenSource.Token)).ToList();
 
-                try
+            try
+            {
+                return await Task.WhenAll(downloadBookCoverTasks);
+            }
+            catch (OperationCanceledException operationCanceledException)
+            {
+                this.logger.LogInformation($"{operationCanceledException.Message}");
+                foreach (Task task in downloadBookCoverTasks)
                 {
-                    return await Task.WhenAll(downloadBookCoverTasks);
+                    this.logger.LogInformation($"Task {task.Id} has status {task.Status}");
                 }
-                catch (OperationCanceledException operationCanceledException)
-                {
-                    this.logger.LogInformation($"{operationCanceledException.Message}");
-                    foreach(Task task in downloadBookCoverTasks)
-                    {
-                        this.logger.LogInformation($"Task {task.Id} has status {task.Status}");
-                    }
-                    return new List<BookCover>();
-                }
+                return new List<BookCover>();
             }
         }
 
@@ -143,6 +144,14 @@ namespace Books.Api.Services
             return null;
         }
 
+        private Task<int> GetBookPages()
+        {
+            return Task.Run(() =>
+            {
+                ComplicatedPageCalculator pageCalculator = new ComplicatedPageCalculator();
+                return pageCalculator.CalculateBookPages();
+            });
+        }
 
         public void Dispose()
         {
