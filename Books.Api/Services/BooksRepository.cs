@@ -14,7 +14,7 @@ namespace Books.Api.Services
 
         public BooksRepository(BooksContext context)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context;
         }
 
         public async Task<Book> GetBookAsync(Guid id)
@@ -31,6 +31,12 @@ namespace Books.Api.Services
             return await this.context.Books
                 .Include(b => b.Author)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds)
+        {
+            return await this.context.Books.Where(b => bookIds.Contains(b.Id))
+                .Include(b => b.Author).ToListAsync();
         }
 
         public void AddBook(Book bookToAdd)

@@ -13,15 +13,13 @@ namespace Books.Api.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private IBooksRepository booksRepository = null;
+        private readonly IBooksRepository booksRepository = null;
         private readonly IMapper mapper = null;
 
         public BooksController(IBooksRepository booksRepository, IMapper mapper)
         {
-            this.booksRepository = booksRepository
-                ?? throw new ArgumentNullException(nameof(booksRepository));
-            this.mapper = mapper
-                ?? throw new ArgumentNullException(nameof(mapper));
+            this.booksRepository = booksRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]

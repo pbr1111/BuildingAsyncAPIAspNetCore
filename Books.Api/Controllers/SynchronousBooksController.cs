@@ -10,12 +10,11 @@ namespace Books.Api.Controllers
     [ApiController]
     public class SynchronousBooksController : ControllerBase
     {
-        private IBooksRepository booksRepository = null;
+        private readonly IBooksRepository booksRepository = null;
 
         public SynchronousBooksController(IBooksRepository booksRepository)
         {
-            this.booksRepository = booksRepository 
-                ?? throw new ArgumentNullException(nameof(booksRepository));
+            this.booksRepository = booksRepository;
         }
 
         [HttpGet]
