@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Books.API.Filters;
-using Books.API.Models;
 using Books.API.Services;
+using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

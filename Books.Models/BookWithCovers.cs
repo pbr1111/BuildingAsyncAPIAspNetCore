@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Books.API.Models
+namespace Books.Models
 {
     public class BookWithCovers : Book
     {

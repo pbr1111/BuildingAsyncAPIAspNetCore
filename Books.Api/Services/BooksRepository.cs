@@ -1,7 +1,6 @@
 ﻿using Books.API.Contexts;
-using Books.API.Entities;
-using Books.API.Models;
 using Books.Legacy;
+using Books.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
