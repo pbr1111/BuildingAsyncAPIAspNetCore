@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Books.Api.Contexts;
-using Books.Api.Services;
+using Books.Api.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,14 +22,10 @@ namespace Books.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            string connectionString = Configuration["ConnectionStrings:BooksDBConnectionString"];
-            services.AddDbContext<BooksContext>(o => o.UseSqlServer(connectionString));
-
-            services.AddScoped<IBooksRepository, BooksRepository>();
-
-            services.AddAutoMapper();
-
-            services.AddHttpClient();
+            services.AddDbContextConfiguration(Configuration)
+                .AddRespositoriesConfiguration()
+                .AddAutoMapper()
+                .AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
