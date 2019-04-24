@@ -1,4 +1,4 @@
-﻿using Books.Api.Contexts;
+﻿using Books.API.Contexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 
-namespace Books.Api
+namespace Books.API
 {
     public class Program
     {

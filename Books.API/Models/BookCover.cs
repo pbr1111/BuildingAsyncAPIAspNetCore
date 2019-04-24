@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Books.Api.ExternalModels
+namespace Books.API.Models
 {
     public class BookCover
     {

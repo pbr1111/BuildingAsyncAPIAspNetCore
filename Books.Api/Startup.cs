@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Books.Api.DependencyInjection;
+using Books.API.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.Api
+namespace Books.API
 {
     public class Startup
     {

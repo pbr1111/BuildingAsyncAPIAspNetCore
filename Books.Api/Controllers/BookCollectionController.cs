@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using Books.Api.Filters;
-using Books.Api.Models;
-using Books.Api.Services;
+using Books.API.Filters;
+using Books.API.Models;
+using Books.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Books.Api.Controllers
+namespace Books.API.Controllers
 {
     [Route("api/bookcollections")]
     [ApiController]

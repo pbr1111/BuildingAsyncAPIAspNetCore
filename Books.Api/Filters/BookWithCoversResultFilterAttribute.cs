@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Books.Api.ExternalModels;
-using Books.Api.Models;
+using Books.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.Api.Filters
+namespace Books.API.Filters
 {
     public class BookWithCoversResultFilterAttribute : ResultFilterAttribute
     {

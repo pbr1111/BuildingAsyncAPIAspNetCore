@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Books.Api.Entities
+namespace Books.API.Entities
 {
     [Table("Authors")]
     public class Author

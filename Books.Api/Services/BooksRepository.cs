@@ -1,6 +1,6 @@
-﻿using Books.Api.Contexts;
-using Books.Api.Entities;
-using Books.Api.ExternalModels;
+﻿using Books.API.Contexts;
+using Books.API.Entities;
+using Books.API.Models;
 using Books.Legacy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Books.Api.Services
+namespace Books.API.Services
 {
     public class BooksRepository : IBooksRepository, IDisposable
     {
@@ -28,7 +28,7 @@ namespace Books.Api.Services
             this.logger = logger;
         }
 
-        public async Task<Book> GetBookAsync(Guid id)
+        public async Task<Entities.Book> GetBookAsync(Guid id)
         {
             await this.context.Database.ExecuteSqlCommandAsync("WAITFOR DELAY '00:00:02';");
             return await this.context.Books
@@ -36,7 +36,7 @@ namespace Books.Api.Services
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task<IEnumerable<Book>> GetBooksAsync()
+        public async Task<IEnumerable<Entities.Book>> GetBooksAsync()
         {
             await this.context.Database.ExecuteSqlCommandAsync("WAITFOR DELAY '00:00:02';");
             return await this.context.Books
@@ -44,7 +44,7 @@ namespace Books.Api.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Book>> GetBooksAsync(IEnumerable<Guid> bookIds)
+        public async Task<IEnumerable<Entities.Book>> GetBooksAsync(IEnumerable<Guid> bookIds)
         {
             int bookPages = await this.GetBookPages();
 
@@ -98,7 +98,7 @@ namespace Books.Api.Services
             }
         }
 
-        public void AddBook(Book bookToAdd)
+        public void AddBook(Entities.Book bookToAdd)
         {
             if (bookToAdd == null)
             {
@@ -111,22 +111,6 @@ namespace Books.Api.Services
         public async Task<bool> SaveChangesAsync()
         {
             return (await this.context.SaveChangesAsync() > 0);
-        }
-
-        public IEnumerable<Book> GetBooks()
-        {
-            this.context.Database.ExecuteSqlCommand("WAITFOR DELAY '00:00:02';");
-            return this.context.Books
-                .Include(b => b.Author)
-                .ToList();
-        }
-
-        public Book GetBook(Guid id)
-        {
-            this.context.Database.ExecuteSqlCommand("WAITFOR DELAY '00:00:02';");
-            return this.context.Books
-                .Include(b => b.Author)
-                .FirstOrDefault(b => b.Id == id);
         }
 
         private async Task<BookCover> DownloadBookCoverAsync(HttpClient httpClient, string bookCoverUrl, CancellationToken cancellationToken)

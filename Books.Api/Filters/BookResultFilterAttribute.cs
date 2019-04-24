@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace Books.Api.Filters
+namespace Books.API.Filters
 {
     public class BookResultFilterAttribute : ResultFilterAttribute
     {

@@ -1,7 +1,6 @@
-﻿using Books.Api.ExternalModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Books.Api.Models
+namespace Books.API.Models
 {
     public class BookWithCovers : Book
     {

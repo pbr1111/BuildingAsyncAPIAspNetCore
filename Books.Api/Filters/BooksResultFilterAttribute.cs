@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.Api.Filters
+namespace Books.API.Filters
 {
     public class BooksResultFilterAttribute : ResultFilterAttribute
     {
