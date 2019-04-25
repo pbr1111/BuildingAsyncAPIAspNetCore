@@ -1,4 +1,4 @@
-﻿using Books.API.Services;
+﻿using Books.Data.Services;
 using Books.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,7 +20,7 @@ namespace Books.API.Controllers
         [HttpGet]
         public IActionResult GetBooks()
         {
-            IEnumerable<Book> result = this.booksRepository.GetBooksAsync().Result;
+            IEnumerable<Book> result = this.booksRepository.GetBooks();
             return Ok(result);
         }
 

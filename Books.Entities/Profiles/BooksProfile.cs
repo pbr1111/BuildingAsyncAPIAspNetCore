@@ -7,15 +7,15 @@ namespace Books.API.Profiles
     {
         public BooksProfile()
         {
-            CreateMap<Entities.Book, Models.Book>()
+            CreateMap<Entities.Book, Entities.DTO.Book>()
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => $"{src.Author.FirstName} {src.Author.LastName}"));
 
-            CreateMap<Models.BookForCreation, Entities.Book>();
+            CreateMap<Entities.DTO.BookForCreation, Entities.Book>();
 
-            CreateMap<Entities.Book, Models.BookWithCovers>()
+            CreateMap<Entities.Book, Entities.DTO.BookWithCovers>()
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => $"{src.Author.FirstName} {src.Author.LastName}"));
 
-            CreateMap<IEnumerable<Models.BookCover>, Models.BookWithCovers>()
+            CreateMap<IEnumerable<Entities.DTO.BookCover>, Entities.DTO.BookWithCovers>()
                 .ForMember(dest => dest.BookCovers, opt => opt.MapFrom(src => src));
         }
     }

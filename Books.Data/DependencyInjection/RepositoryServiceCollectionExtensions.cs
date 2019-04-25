@@ -1,7 +1,7 @@
-﻿using Books.API.Services;
+﻿using Books.Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.API.DependencyInjection
+namespace Books.Data.DependencyInjection
 {
     public static class RepositoryServiceCollectionExtensions
     {

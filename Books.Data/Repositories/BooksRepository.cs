@@ -1,17 +1,16 @@
-﻿using Books.API.Contexts;
-using Books.Legacy;
-using Books.Models;
+﻿using Books.Entities.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Books.Data.Contexts;
+using Newtonsoft.Json;
 
-namespace Books.API.Services
+namespace Books.Data.Services
 {
     public class BooksRepository : IBooksRepository, IDisposable
     {
@@ -43,10 +42,16 @@ namespace Books.API.Services
                 .ToListAsync();
         }
 
+        public IEnumerable<Entities.Book> GetBooks()
+        {
+            this.context.Database.ExecuteSqlCommand("WAITFOR DELAY '00:00:05';");
+            return this.context.Books
+                .Include(b => b.Author)
+                .ToList();
+        }
+
         public async Task<IEnumerable<Entities.Book>> GetBooksAsync(IEnumerable<Guid> bookIds)
         {
-            int bookPages = await this.GetBookPages();
-
             return await this.context.Books.Where(b => bookIds.Contains(b.Id))
                 .Include(b => b.Author).ToListAsync();
         }
@@ -125,15 +130,6 @@ namespace Books.API.Services
 
             this.cancellationTokenSource.Cancel();
             return null;
-        }
-
-        private Task<int> GetBookPages()
-        {
-            return Task.Run(() =>
-            {
-                ComplicatedPageCalculator pageCalculator = new ComplicatedPageCalculator();
-                return pageCalculator.CalculateBookPages();
-            });
         }
 
         public void Dispose()

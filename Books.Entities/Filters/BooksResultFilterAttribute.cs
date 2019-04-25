@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.API.Filters
+namespace Books.Entities.Filters
 {
     public class BooksResultFilterAttribute : ResultFilterAttribute
     {
@@ -21,7 +21,7 @@ namespace Books.API.Filters
             }
 
             IMapper mapper = context.HttpContext.RequestServices.GetService<IMapper>();
-            resultFromAction.Value = mapper.Map<IEnumerable<Models.Book>>(resultFromAction.Value);
+            resultFromAction.Value = mapper.Map<IEnumerable<DTO.Book>>(resultFromAction.Value);
 
             await next();
         }

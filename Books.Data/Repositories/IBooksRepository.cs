@@ -1,12 +1,13 @@
-﻿using Books.Models;
+﻿using Books.Entities.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Books.API.Services
+namespace Books.Data.Services
 {
     public interface IBooksRepository
     {
+        IEnumerable<Entities.Book> GetBooks();
         void AddBook(Entities.Book bookToAdd);
         Task<IEnumerable<Entities.Book>> GetBooksAsync();
         Task<IEnumerable<Entities.Book>> GetBooksAsync(IEnumerable<Guid> bookIds);

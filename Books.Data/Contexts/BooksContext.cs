@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Books.API.Contexts
+namespace Books.Data.Contexts
 {
     public class BooksContext: DbContext
     {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Books.API.DependencyInjection;
+using Books.Data.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

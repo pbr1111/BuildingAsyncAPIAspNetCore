@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Books.API
+namespace Books.Common.ModelBinders
 {
     public class ArrayModelBinder : IModelBinder
     {

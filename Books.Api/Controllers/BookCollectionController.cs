@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using Books.API.Filters;
-using Books.API.Services;
-using Books.Models;
+using Books.Common.ModelBinders;
+using Books.Data.Services;
+using Books.Entities.DTO;
+using Books.Entities.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

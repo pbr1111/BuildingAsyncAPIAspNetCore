@@ -1,9 +1,9 @@
-﻿using Books.API.Contexts;
+﻿using Books.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.API.DependencyInjection
+namespace Books.Data.DependencyInjection
 {
     public static class ConfigurationServiceCollectionExtensions
     {

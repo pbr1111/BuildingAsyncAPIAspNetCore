@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace Books.API.Filters
+namespace Books.Entities.Filters
 {
     public class BookResultFilterAttribute : ResultFilterAttribute
     {
@@ -20,7 +20,7 @@ namespace Books.API.Filters
             }
 
             IMapper mapper = context.HttpContext.RequestServices.GetService<IMapper>();
-            resultFromAction.Value = mapper.Map<Models.Book>(resultFromAction.Value);
+            resultFromAction.Value = mapper.Map<DTO.Book>(resultFromAction.Value);
 
             await next();
         }

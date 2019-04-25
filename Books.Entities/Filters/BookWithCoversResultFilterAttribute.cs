@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Books.Models;
+using Books.Entities.DTO;
 
-namespace Books.API.Filters
+namespace Books.Entities.Filters
 {
     public class BookWithCoversResultFilterAttribute : ResultFilterAttribute
     {
